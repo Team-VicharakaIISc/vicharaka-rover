@@ -1,4 +1,3 @@
-
 # Vicharaka Rover - Main Codebase
 
 This repository contains the main codebase for the Vicharaka Rover project, structured to support configuration, description, and simulation in ROS and Gazebo.
@@ -23,3 +22,10 @@ This repository contains the main codebase for the Vicharaka Rover project, stru
 - **package.xml**  
   ROS package metadata, including dependencies and version information.
 
+## Dependencies
+
+To install necessary ROS packages, run the following commands:
+
+```bash
+sudo apt install ros-<distro>-robot-state-publisher
+sudo apt install ros-<distro>-xacro
