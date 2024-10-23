@@ -12,7 +12,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Variables
-    package_path = os.path.join(get_package_share_directory("vicharaka_rover"))
+    package_path = os.path.join(get_package_share_directory("vicharaka-rover"))
     xacro_file_path = os.path.join(package_path, "description", "rover.urdf.xacro")
 
     # Process the xacro file to generate the robot description
