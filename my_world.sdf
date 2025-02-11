@@ -90,7 +90,7 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='vicharaka_rover'>
+    <model name='vicharaka-rover'>
       <link name='base_link'>
         <inertial>
           <pose>-0.067475 0 0.081098 0 -0 0</pose>
@@ -1224,7 +1224,7 @@
       <real_time>75 445764592</real_time>
       <wall_time>1736444910 770459368</wall_time>
       <iterations>74881</iterations>
-      <model name='vicharaka_rover'>
+      <model name='vicharaka-rover'>
         <pose>0.087039 -0.023892 0.032997 -1.6e-05 1.8e-05 0.755749</pose>
         <scale>1 1 1</scale>
         <link name='base_link'>

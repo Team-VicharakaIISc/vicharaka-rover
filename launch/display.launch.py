@@ -9,9 +9,9 @@ from launch.substitutions import Command
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    pkg_name = 'vicharaka_rover'
-    pkg_share = launch_ros.substitutions.FindPackageShare(package='vicharaka_rover').find('vicharaka_rover')
-    default_model_path = os.path.join(pkg_share, 'src/description/vicharaka_rover.urdf')
+    pkg_name = 'vicharaka-rover'
+    pkg_share = launch_ros.substitutions.FindPackageShare(package='vicharaka-rover').find('vicharaka-rover')
+    default_model_path = os.path.join(pkg_share, 'src/description/vicharaka-rover.urdf')
     default_rviz_config_path = os.path.join(pkg_share, 'rviz/urdf_config.rviz')
 
     robot_state_publisher_node = Node(
@@ -49,7 +49,7 @@ def generate_launch_description():
     spawn_entity = Node(
     package='gazebo_ros',
     executable='spawn_entity.py',
-    arguments=['-entity', 'vicharaka_rover', '-topic', 'robot_description'],
+    arguments=['-entity', 'vicharaka-rover', '-topic', 'robot_description'],
     output='screen'
     )
     
@@ -80,6 +80,6 @@ def generate_launch_description():
         # spawn_entity,
         robot_localization_node,
         rviz_node,
-        # joint_state_publisher_node,
+        joint_state_publisher_node,
         odometry_publisher
     ])
