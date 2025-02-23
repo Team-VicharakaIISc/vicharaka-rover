@@ -45,7 +45,7 @@ def generate_launch_description():
             parameters=[twist_mux_params],
             remappings=[('/cmd_vel_out','/cmd_vel')]
         )
-    
+
     spawn_entity = Node(
     package='gazebo_ros',
     executable='spawn_entity.py',
@@ -81,5 +81,5 @@ def generate_launch_description():
         robot_localization_node,
         rviz_node,
         joint_state_publisher_node,
-        odometry_publisher
+        # odometry_publisher,
     ])
