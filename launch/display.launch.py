@@ -75,11 +75,11 @@ def generate_launch_description():
         launch.actions.DeclareLaunchArgument(name='use_sim_time', default_value='True',
                                             description='Flag to enable use_sim_time'),
         robot_state_publisher_node,
-        joystick,
-        twist_mux,
+        # joystick,
+        # twist_mux,
         # spawn_entity,
         robot_localization_node,
-        rviz_node,
+        # rviz_node,
         joint_state_publisher_node,
         odometry_publisher
     ])

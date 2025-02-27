@@ -39,8 +39,8 @@ local_parameters = [{'name': 'camera_name',                  'default': 'camera'
                     {'name': 'pointcloud.enable',            'default': 'true', 'description': 'enable pointcloud'},
                     {'name': 'enable_gyro',                  'default': 'true', 'description': "'enable gyro stream'"},
                     {'name': 'enable_accel',                 'default': 'true', 'description': "'enable accel stream'"},
-                    {'name': 'gyro_fps',                     'default': '0', 'description': "''"},
-                    {'name': 'accel_fps',                    'default': '0', 'description': "''"}
+                    # {'name': 'gyro_fps',                     'default': '0', 'description': "''"},
+                    # {'name': 'accel_fps',                    'default': '0', 'description': "''"}
                    ]
 
 def set_configurable_parameters(local_params):
