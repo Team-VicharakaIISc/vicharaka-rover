@@ -65,6 +65,8 @@ def generate_launch_description():
         output='screen',
         parameters=[os.path.join(pkg_share, 'config/ekf.yaml'), {'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
+
+    
     return launch.LaunchDescription([
 
         launch.actions.DeclareLaunchArgument(name='model', default_value=default_model_path,
@@ -78,8 +80,14 @@ def generate_launch_description():
         # joystick,
         # twist_mux,
         # spawn_entity,
-        robot_localization_node,
-        # rviz_node,
+        # robot_localization_node,
+        rviz_node,
         joint_state_publisher_node,
-        odometry_publisher
+        # odometry_publisher
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(
+                get_package_share_directory('vicharaka-rover'), 'launch'),
+                '/rtabmap.launch.py'])
+            
+        ),
     ])
