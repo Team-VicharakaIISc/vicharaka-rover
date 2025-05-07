@@ -14,16 +14,46 @@ def generate_launch_description():
     default_model_path = os.path.join(pkg_share, 'src/description/vicharaka-rover.urdf')
     default_rviz_config_path = os.path.join(pkg_share, 'rviz/urdf_config.rviz')
 
+    parameters=[{
+          'frame_id':'base_footprint',
+          'odom_frame_id':'odom',
+          'subscribe_depth':True,
+          'subscribe_odom_info':True,
+          'wait_imu_to_init':True,
+          'approx_sync':False}]
+    
+
+    remappings1=[
+          ('/odom', '/visual_odom'),
+          ('/imu', 'sensor/imu/data'),
+          ('rgb/image', '/camera/camera/color/image_raw'),
+          ('rgb/camera_info', '/camera/camera/color/camera_info'),
+          ('depth/image', '/camera/camera/depth/image_rect_raw')]    
+    
+    remappings2=[
+          ('/imu', '/imu/data'),
+          ('rgb/image', '/camera/camera/color/image_raw'),
+          ('rgb/camera_info', '/camera/camera/color/camera_info'),
+          ('depth/image', '/camera/camera/depth/image_rect_raw')]   
+    remappings3=[
+          ('/odom', '/odmetry/filtered'),
+          ('/imu', 'sensor/imu/data'),
+          ('rgb/image', '/camera/camera/color/image_raw'),
+          ('rgb/camera_info', '/camera/camera/color/camera_info'),
+          ('depth/image', '/camera/camera/depth/image_rect_raw')]   
+
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         parameters=[{'robot_description': Command(['xacro ', LaunchConfiguration('model')])}]
     )
+
     joint_state_publisher_node = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
     )
+
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
@@ -60,13 +90,55 @@ def generate_launch_description():
     
     robot_localization_node = Node(
         package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
+        executable='ukf_node',
+        name='ukf_filter_node',
         output='screen',
-        parameters=[os.path.join(pkg_share, 'config/ekf.yaml'), {'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        parameters=[os.path.join(pkg_share, 'config/ekf.yaml')]
     )
 
-    
+    imu_fusion_node = Node(
+        package='imu_fusion_pkg',
+        executable='imu_fusion',
+        name='imu_node'
+    )
+
+    depth_camera_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(pkg_name),'launch','depth_camera.launch.py'
+                )])
+    )
+
+    sensor_filter_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(pkg_name),'launch','sensor_filter.launch.py'
+                )])
+    )
+
+    navigation_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(pkg_name),'launch','navigation.launch.py'
+                )])
+    )
+
+    rtabmap_odom = Node(
+            package='rtabmap_odom', executable='rgbd_odometry', output='screen',
+            parameters=parameters,
+            remappings=remappings1,
+            arguments=['--ros-args', '--log-level', 'error'])
+
+    rtabmap_slam = Node(
+            package='rtabmap_slam', executable='rtabmap', output='screen',
+            parameters=parameters,
+            remappings=remappings1,
+            arguments=['--ros-args', '--log-level', 'error'])
+
+    rtabmap_viz = Node(
+            package='rtabmap_viz', executable='rtabmap_viz', output='screen',
+            parameters=parameters,
+            remappings=remappings1,
+            arguments=['--ros-args', '--log-level', 'error'])
+
+
     return launch.LaunchDescription([
 
         launch.actions.DeclareLaunchArgument(name='model', default_value=default_model_path,
@@ -80,14 +152,14 @@ def generate_launch_description():
         # joystick,
         # twist_mux,
         # spawn_entity,
-        # robot_localization_node,
-        rviz_node,
+        # rviz_node,
         joint_state_publisher_node,
+        imu_fusion_node,
+        depth_camera_launch,
+        sensor_filter_launch,
+        rtabmap_odom,
+        # robot_localization_node
+        rtabmap_slam,
+        # rtabmap_viz
         # odometry_publisher
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([os.path.join(
-                get_package_share_directory('vicharaka-rover'), 'launch'),
-                '/rtabmap.launch.py'])
-            
-        ),
     ])
